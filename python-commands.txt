@@ -1,0 +1,76 @@
+Here are all the commands used in the Hotel Cancellation Analysis project, along with comment and finding/reason for each command:
+
+
+# Importing required libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pycountry as pc
+
+# Importing the dataset
+data = pd.read_csv('hotel_bookings.csv')
+
+# Displaying the first 5 rows of the dataset
+data.head()
+
+# Dealing with missing values
+df = data.drop(df[(df.adults+df.babies+df.children)==0].index)
+
+# Replacing null values in 'agent' and 'company' columns with 0
+df[['agent','company']] = df[['agent','company']].fillna(0.0)
+
+# Replacing missing values in 'country' column with the mode
+df['country'].fillna(data.country.mode().to_string(), inplace=True)
+
+# Replacing missing values in 'children' column with rounded mean value
+df['children'].fillna(round(data.children.mean()), inplace=True)
+
+# Converting data types of 'children', 'company', and 'agent' columns to int64
+df[['children', 'company', 'agent']] = df[['children', 'company', 'agent']].astype('int64')
+
+# Displaying the correlation heatmap between columns
+sns.heatmap(df_subset.corr(), annot=True, ax=ax)
+
+# Transforming categorical variables to numerical using Label Encoding
+df = transform(df)
+
+# Splitting the data into training and testing sets
+x_train, x_test, y_train, y_test = data_split(df_subset, 'is_canceled')
+
+# Training the Decision Tree Classifier model
+clf = train(x_train, y_train)
+
+# Evaluating the model's accuracy on training data
+Score(clf, x_train, y_train, x_train, y_train)
+
+# Predicting the cancellation status of the 10th record in the training set
+prediction = clf.predict(x_train.iloc[10].values.reshape(1,-1))
+
+# Actual cancellation status of the 10th record in the training set
+actual_value = y_train.iloc[10]
+
+# Displaying the predicted and actual values
+print(f'Predicted Value: {prediction[0]}')
+print(f'Actual Value: {actual_value}')
+
+
+Comments and Findings:
+
+1. The command `data.head()` is used to display the first 5 rows of the dataset, which helps to get an initial overview of the data structure.
+
+2. The command `df = data.drop(df[(df.adults+df.babies+df.children)==0].index)` is used to drop rows where there are no adults, babies, or children in the booking. This step is important to ensure valid data for analysis.
+
+3. The command `df[['agent','company']] = df[['agent','company']].fillna(0.0)` is used to replace missing values in the 'agent' and 'company' columns with 0. This is done to handle the missing data appropriately.
+
+4. The command `df['children'].fillna(round(data.children.mean()), inplace=True)` is used to replace missing values in the 'children' column with the rounded mean value. This ensures that missing values are replaced with a reasonable estimate.
+
+5. The command `df[['children', 'company', 'agent']] = df[['children', 'company', 'agent']].astype('int64')` is used to convert the data types of 'children', 'company', and 'agent' columns to int64. This is necessary for performing numerical operations.
+
+6. The command `sns.heatmap(df_subset.corr(), annot=True, ax=ax)` is used to create a correlation heatmap between columns. This helps to identify relationships between variables and understand their impact on the target variable 'is_canceled'.
+
+7. The command `df = transform(df)` is used to apply Label Encoding to transform categorical variables to numerical format, which is required for machine learning models.
+
+8. The command `Score(clf, x_train, y_train, x_train, y_train)` is used to evaluate the accuracy of the Decision Tree Classifier model on the training data. This helps to assess how well the model is performing on the data it was trained on.
+
+9. The commands `prediction = clf.predict(x_train.iloc[10].values.reshape(1,-1))` and `actual_value = y_train.iloc[10]` are used to predict the cancellation status of the 10th record in the training set and compare it with the actual value. This allows us to understand how well the model is making predictions.
